@@ -1,5 +1,13 @@
 # Eurusys-Assignment
 Contract.io is a modern, single-page contract management application built with React, TypeScript, and Tailwind CSS. It allows users to create reusable contract templates (Blueprints), generate contracts from these templates, and manage their full lifecycle in a visually appealing, SaaS-style dashboard.
+This project is a Contract Management Application built using React and Tailwind CSS.
+It helps users create contract templates called blueprints and generate contracts from them.
+The app allows dynamic form creation based on selected blueprints, making contract creation faster.
+Users can manage contracts through different lifecycle stages like Created, Locked, and Revoked.
+It ensures data safety by keeping existing contracts unchanged even if templates are edited later.
+The project uses React Context API for global state management.
+Smooth animations are added using Framer Motion for a better user experience.
+Overall, this application simplifies contract creation and management in a professional way.
 # 📑 Contract Management Platform
 
 A high-performance, frontend-based contract lifecycle management tool built with React, Tailwind CSS, and Framer Motion.
