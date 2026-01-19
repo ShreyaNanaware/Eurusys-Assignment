@@ -145,4 +145,27 @@ Used for compliance and audit safety
 screenshots/
  ├── dashboard.png
  ├── blueprint.png
- └── contract.png![Uploading added in table.png…]()
+ └── contract.png
+ ## 📸 App Preview
+
+### 1. Centralized Dashboard
+The main command center displaying all contracts with their respective blueprints and lifecycle statuses.
+<p align="center">
+  <img src="./1-dashboard.png" width="900" alt="MidasCore Dashboard">
+</p>
+
+---
+
+### 2. Blueprint Builder (Template Creator)
+An interactive workspace to define contract fields (Text, Date, Signature, Checkbox) with positioning metadata.
+<p align="center">
+  <img src="./2-Buildtemplate.png" width="900" alt="Blueprint Builder">
+</p>
+
+---
+
+### 3. Dynamic Contract Generation
+The form engine that inherits fields from selected blueprints to generate live, fillable contracts.
+<p align="center">
+  <img src="./3-newcontract.png" width="900" alt="New Contract Creation">
+</p>
