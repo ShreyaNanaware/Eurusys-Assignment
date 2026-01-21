@@ -199,58 +199,150 @@ talwin/
 
 
 ## 📖 Usage Guide
-
-### Creating a Blueprint
-
-1. Navigate to **Blueprints(Build template button)** from the sidebar
-2. Click **New Blueprint (Build template)** button
-3. Click **Add Field** to open the field modal
-4. Enter field label and select type (text, date, checkbox, signature)
-5. Click **Add** - field appears on the A4 canvas
-6. Drag fields to desired positions on the canvas
-7. Add more fields as needed
-8. Click **Save Blueprint(create template)**
-9. Enter blueprint name and optional description
-10. Click **Save** - redirects to blueprints list
-
-### Creating a Contract
-
-1. Navigate to **Contracts** from the sidebar
-2. Click **New Contract** button
-3. Select a blueprint from the dropdown
-4. Contract name auto-fills (editable)
-5. Fill in values for each field:
+### 1. Open the App
+Go to
+🌐 https://calm‑bublanina‑158fbb.netlify.app/
+You should see the dashboard or main page with a sidebar navigation
+### Build Template (Create a Blueprint)
+Click “Blueprints” in the sidebar.
+You’ll see a list of existing blueprints (empty if none are created yet).
+Click “New Blueprint”.
+A modal opens where you can add fields:
+Text — for names or descriptions
+Date — for dates
+Checkbox — for yes/no values
+Signature — upload an image for a signature
+Once you add a field, Fill in values for each field:
    - **Text fields**: Enter text
    - **Date fields**: Select from date picker
    - **Checkbox fields**: Check/uncheck
-   - **Signature fields**: Upload image file
-6. View live preview on the right side (A4 document)
-7. Click **Save Contract**
-8. Contract is created with "Created" status
+   - **Signature fields**: Upload image file it appears on the A4 canvas.
+You can drag and position fields anywhere on the canvas.
+Continue adding as many fields as you need.
+Give your blueprint a name (e.g., Freelance Agreement).
+Click Save Blueprint.
 
-### Managing Contract Status
+### Creating Create New Contract
 
-1. Open a contract from the contracts list
-2. View the status tracker showing current progress
-3. Click **Update to [Next Status]** to move forward
-4. Click **Revoke Contract** (only available at Created/Sent stages)
-5. Status updates are saved automatically
-6. Locked contracts cannot be modified
+After you have at least one blueprint:
+Click “Contracts” in the sidebar.
+Click “New Contract”.
+In the form:
+Select a blueprint from a dropdown.
+Enter a contract name.
+The form auto‑generates based on the fields you placed in the blueprint:
+Type text
+Pick dates
+Check checkboxes
+Upload signature images
+You see a live A4 preview showing how the contract will look when printed.
+When done, click Save Contract.
+👉 This creates a new contract with status “Created”.
+### Dashboard / Contract ListThe dashboard (or Contracts page) shows all existing contracts in a table or list.
 
-### Viewing and Printing Contracts
+You’ll see:
+Contract names
+Status
+Actions like:
+View
+Update status
+Delete
+You can also:
+Search contracts
+Filter by status
 
-1. Click **View** (eye icon) on any contract
-2. See contract details and status tracker
-3. View A4 document preview with all field values
-4. Click **Print to PDF** button (if implemented)
-5. Use browser's print dialog to save as PDF
+## 🔄 Contract Status Workflow
+Each contract goes through a standard lifecycle: 
 
-### Deleting Items
+```
+Created → Approved → Sent → Signed → Locked
+   ↓                    ↓
+Revoked ←──────────────┘
 
-1. Click **Delete** (trash icon) on blueprint or contract
-2. Confirmation modal appears
-3. Click **Delete** to confirm or **Cancel** to abort
-4. Success toast notification appears
+Display Status Mapping:
+- Active: Created, Approved
+- Pending: Sent
+- Signed: Signed, Locked
+- Revoked: Revoked
+```
+
+**How it works:**
+
+1. When a contract is first saved it is **Created**.
+2. Click a button to move it to **Approved**.
+3. Then to **Sent** (for review or client delivery).
+4. Then to **Signed** after signature upload.
+5. Finally, to **Locked** when complete.
+6. You can **Revoke** a contract (only at certain stages: Created or Sent).
+
+The UI shows a **visual tracker** so you can see the current status of a contract.
+
+---
+
+## 📄 View Contract & Print
+
+When viewing a contract:
+
+- You see a **detailed preview** of the filled contract.
+- All fields appear in their correct positions.
+- Click **Print / PDF** to export the contract using the browser print dialog.
+
+---
+
+## 🖋 Signature Upload
+
+For signature fields:
+
+1. Click the **upload input**.
+2. Select an **image file** (under ~2MB).
+3. The app converts it to **base64**.
+4. The signature appears in the **contract print preview**.
+
+---
+
+## 🧠 Behind the Scenes
+
+- Blueprints and contracts are stored in **localStorage** — no backend database.
+- Editing a blueprint does **not affect existing contracts** (contracts keep a copy of their blueprint fields).
+- All data persists across sessions until browser localStorage is cleared.
+
+---
+
+## 🛠 Example User Journey
+
+1. Go to **Blueprints**.
+2. Create a blueprint called **“Employment Agreement”**:
+   - Add **Text**: Employee Name
+   - Add **Date**: Start Date
+   - Add **Signature**: Employer Signature
+3. **Save** the blueprint.
+4. Go to **Contracts**.
+5. Click **New Contract**:
+   - Choose the “Employment Agreement” blueprint.
+   - Fill in all fields.
+   - Upload signatures.
+6. Save the contract (**status = Created**).
+7. Move status: **Created → Approved → Sent**.
+8. When signed, mark **Signed**.
+9. Finally, mark **Locked**.
+10. **Print** the contract to PDF.
+
+---
+
+## 📌 Quick Navigation Summary
+
+| Section       | What You Do                                           |
+|---------------|------------------------------------------------------|
+| Blueprints    | Create templates for contracts                       |
+| Contracts     | Generate and manage contract instances               |
+| Dashboard/List| View all contracts, filter & search                 |
+| Status Controls | Advance contract through the lifecycle            |
+| View/Print    | Preview & export final contract                      |
+
+---
+
+This README can serve as a **quick reference guide** for end users to understand the workflow, signature handling, and contract management features.
+
 
 ## 💾 Data Storage
 
@@ -304,10 +396,9 @@ Display Status Mapping:
 ```
 
 ## � Architecture and Design Decisions
+## 🏛 Application Architecture
 
-### Application Architecture
-
-The application follows a **Component-Based Architecture** using React with TypeScript, organized into clear layers:
+The Contract Manager follows a **Component-Based Architecture** using React with localStorage for persistence. The application is structured in layers for maintainability and scalability.
 
 ```
 ┌─────────────────────────────────────────────┐
@@ -325,130 +416,123 @@ The application follows a **Component-Based Architecture** using React with Type
 │       (localStorage, db.ts utilities)       │
 └─────────────────────────────────────────────┘
 ```
-
 ### Key Design Decisions
 
 #### 1. **Client-Side Only Architecture**
-- **Decision**: Build as a pure frontend application with no backend
+- **Decision**: The app is a pure frontend application with no backend.
 - **Rationale**: 
-  - Faster prototyping and development
-  - No server infrastructure required
-  - Instant data access without API latency
-  - Suitable for single-user, local document management
-- **Trade-off**: Cannot support multi-user collaboration or cloud sync
+  - Rapid prototyping and deployment
+  - No server or database required
+  - Instant access to blueprints and contracts
+  - Ideal for single-user or small-team local contract management
+- **Trade-off**: Multi-user collaboration or cloud sync is not supported.
 
 #### 2. **localStorage for Data Persistence**
-- **Decision**: Use browser's localStorage API for all data storage
+- **Decision**: Use browser `localStorage` for all data storage.
 - **Rationale**:
-  - Simple implementation without database setup
-  - Native browser support, no external dependencies
-  - Synchronous API for predictable data operations
+  - Simple setup, no database configuration
   - Data persists across browser sessions
-- **Trade-off**: 
-  - Limited storage (~5-10MB)
-  - Data not accessible across devices
-  - No backup/restore functionality
-  - Vulnerable to browser data clearing
+  - Native browser API, no external dependencies
+  - Synchronous operations make field positions and contract data predictable
+- **Trade-off**:
+  - Limited storage (~5–10MB)
+  - Data is not accessible across devices
+  - Clearing browser data deletes all blueprints/contracts
 
-#### 3. **Blueprint-Contract Pattern**
-- **Decision**: Separate blueprints (templates) from contracts (instances)
+#### 3. **Blueprint-Contract Separation**
+- **Decision**: Blueprints act as templates, contracts are instances.
 - **Rationale**:
-  - Reusability - create multiple contracts from one blueprint
-  - Consistency - ensure all contracts follow the same structure
-  - Efficiency - define field positions once, reuse many times
-  - Flexibility - modify blueprint without affecting existing contracts
-- **Implementation**: Contracts store `blueprintId` reference and copy of fields with values
+  - Reusability: One blueprint can generate multiple contracts
+  - Consistency: Contracts follow the same structure as blueprint
+  - Efficiency: Field positions are defined once
+  - Flexibility: Blueprint updates do not alter existing contracts
+- **Implementation**: Contracts store a copy of blueprint fields and their values along with `blueprintId`.
 
-#### 4. **Drag-and-Drop Field Positioning**
-- **Decision**: Use custom drag-and-drop hook instead of external libraries
+#### 4. **Custom Drag-and-Drop Field Positioning**
+- **Decision**: Use a custom `useDraggable` hook for field positioning on the A4 canvas.
 - **Rationale**:
-  - `react-draggable` deprecated/incompatible with React 19
-  - Custom implementation provides precise control
-  - No additional dependencies
-  - Better performance for our specific use case
-- **Implementation**: 
-  - `useDraggable` hook manages mouse events
-  - Canvas-relative positioning
-  - Boundary checking to keep fields within A4 canvas
+  - Lightweight, precise control without extra dependencies
+  - Works with React 19 without compatibility issues
+  - Ensures pixel-perfect placement for printing
+- **Implementation**:
+  - Hook handles mouse/touch events
+  - Positions are relative to canvas boundaries
+  - Prevents fields from overflowing the A4 area
 
 #### 5. **A4 Canvas Standard**
-- **Decision**: Fix canvas to A4 paper dimensions (794×1123px at 96 DPI)
+- **Decision**: Fix canvas to A4 dimensions (794×1123px at 96 DPI)
 - **Rationale**:
   - Matches real-world document size
-  - Print-friendly layout
+  - Print-ready formatting
   - Predictable field positioning
-  - Professional document appearance
-- **Implementation**: Pixel-perfect positioning that translates to print
+  - Professional appearance for exports
+- **Implementation**: Drag-and-drop field positions translate directly to print layout.
 
-#### 6. **React Router for Navigation**
-- **Decision**: Use client-side routing with React Router DOM v7
+#### 6. **React Router for SPA Navigation**
+- **Decision**: Use React Router DOM v7 for routing.
 - **Rationale**:
-  - SPA experience without page reloads
+  - Single-page app experience without reloads
   - Clean URL structure
-  - Supports browser back/forward navigation
-  - Easy to add new routes
+  - Supports browser navigation
+  - Easy to extend with new pages
 - **Routes**:
-  - `/contracts` - Contract list
-  - `/contracts/create` - New contract form
-  - `/contracts/view/:id` - Contract details
-  - `/blueprints` - Blueprint list
-  - `/blueprints/create` - Blueprint designer
-  - `/blueprints/view/:id` - Blueprint preview
+  - `/contracts` – Contract list
+  - `/contracts/create` – New contract form
+  - `/contracts/view/:id` – Contract details
+  - `/blueprints` – Blueprint list
+  - `/blueprints/create` – Blueprint editor
+  - `/blueprints/view/:id` – Blueprint preview
 
 #### 7. **TypeScript for Type Safety**
-- **Decision**: Use TypeScript throughout the application
+- **Decision**: Use TypeScript across the app.
 - **Rationale**:
   - Catch errors at compile time
-  - Better IDE support and autocomplete
-  - Self-documenting code
-  - Easier refactoring
-- **Types**: Centralized in `types/` folder
+  - Better IDE support & autocomplete
+  - Self-documenting types for blueprints and contracts
+  - Easier future refactoring
+- **Types**: Centralized in `src/types` folder
 
 #### 8. **TailwindCSS for Styling**
-- **Decision**: Use utility-first CSS framework
+- **Decision**: Utility-first CSS with Tailwind v3.
 - **Rationale**:
-  - Rapid UI development
-  - Consistent design system
-  - No CSS naming conflicts
+  - Fast UI development
+  - Consistent, responsive design system
+  - Avoids CSS naming conflicts
   - Built-in responsive utilities
-  - Small bundle size with purging
-- **Customization**: Extended with custom colors in `tailwind.config.ts`
+- **Customization**: Tailored colors and theme in `tailwind.config.ts`
 
 #### 9. **Component Composition**
-- **Decision**: Create reusable components (ConfirmModal, DraggableField, etc.)
+- **Decision**: Reusable components for DRY, maintainable UI.
 - **Rationale**:
-  - DRY principle (Don't Repeat Yourself)
   - Consistent UI patterns
-  - Easier maintenance
-  - Testability
-- **Strategy**: Split UI into logical, reusable pieces
+  - Easier maintenance and updates
+  - Testable components
+- **Examples**: `ConfirmModal`, `DraggableField`, `BlueprintCard`, `ContractTable`.
 
-#### 10. **Status Workflow System**
-- **Decision**: Implement linear workflow with revoke option
+#### 10. **Contract Status Workflow**
+- **Decision**: Linear lifecycle with a Revoke option.
 - **Rationale**:
   - Mirrors real-world contract processes
-  - Clear progression path
-  - Audit trail (status history via updatedAt)
-  - Prevents accidental modifications (locked state)
-- **Workflow**: Created → Approved → Sent → Signed → Locked (+ Revoked)
+  - Clear visual tracker in the UI
+  - Prevents accidental edits after locking
+- **Workflow**: `Created → Approved → Sent → Signed → Locked (+ Revoked)`
 
 #### 11. **Base64 for Signature Images**
-- **Decision**: Convert uploaded images to base64 strings
+- **Decision**: Convert uploaded signature images to base64.
 - **Rationale**:
-  - No file storage infrastructure needed
-  - Images embedded directly in contract data
-  - Portable - contract contains all data
+  - No backend or file storage needed
+  - Contract data remains self-contained
   - Works with localStorage
-- **Trade-off**: Increases storage size, limited to smaller images
+- **Trade-off**: Increases storage size, suitable only for small images (<2MB)
 
-#### 12. **Toast Notifications + Modals**
-- **Decision**: Use react-hot-toast for feedback, custom modals for confirmations
+#### 12. **Toast Notifications & Modals**
+- **Decision**: Use `react-hot-toast` for feedback and custom modals for confirmations.
 - **Rationale**:
-  - Better UX than native `alert()` and `confirm()`
-  - Non-blocking notifications
-  - Consistent design
-  - Accessible and customizable
-- **Implementation**: Toaster in root, modals per component
+  - Modern, non-blocking UX
+  - Clear feedback for users
+  - Accessible and consistent design
+- **Implementation**: Toaster placed in root; modals per component as needed.
+
 
 ### State Management Strategy
 
@@ -465,7 +549,7 @@ The application follows a **Component-Based Architecture** using React with Type
   /components     - Reusable UI components
   /hooks          - Custom React hooks (business logic)
   /pages          - Route-level components
-  /types          - TypeScript interfaces
+  /types          -  interfaces
   /storage        - Data layer utilities
 ```
 
