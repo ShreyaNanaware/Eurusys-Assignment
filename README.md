@@ -76,7 +76,7 @@ Before starting, ensure you have the following installed on your system:
 1. **Extract or Clone the Project**
    ```bash
    # If using Git
-   git clone <repository-url>
+   git clone https://github.com/ShreyaNanaware/Eurusys-Assignment
    cd contract-manager
    
    # OR if you have a zip file
