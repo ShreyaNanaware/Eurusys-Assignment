@@ -1,7 +1,8 @@
 # Contract.io
 A modern web application for creating, managing, and tracking contracts using customizable blueprints with drag-and-drop field positioning.
-
+                                             
 🌐 **Live Demo**: [https://cm-assignment-dusky.vercel.app/](https://calm-bublanina-158fbb.netlify.app/)
+🌐 **Live Demo**: [https://cm-assignment-dusky.vercel.app/](https://eurusys-assignment.vercel.app//)
 
 ## 📋 Overview
 
