@@ -142,28 +142,45 @@ npm run dev - Start development server with hot reload
 npm run build - Build production-ready bundle
 npm run preview - Preview production build locally
 npm run lint - Run ESLint for code quality checks
+### Common Issues & Solutions
+
+**Issue:** Port 5173 already in use  
+**Solution:** Kill the process using that port or Vite will automatically use the next available port
+
+**Issue:** TypeScript errors during build  
+**Solution:** Run `npm run lint` to identify issues, ensure TypeScript version is compatible
+
+**Issue:** Vite not found  
+**Solution:** Run `npm install -g vite` or use `npx vite` instead
+
+---
+
+### Folder Structure
+
+```text
 talwin/
 ├── public/                 # Static assets (images, logos)
-├──  src/
+├── src/
 │   ├── components/         # Atomic UI elements used everywhere
-│   │   └──  ui/
+│   │   └── ui/
 │   │       └── Badge.jsx    # Status indicators
-│   ├──  context/            # THE STATE ENGINE
-│   │   └──  AppContext.jsx  # Context Provider & Lifecycle logic
-│   ├──  features/           # BUSINESS DOMAINS (Non-Monolithic)
-│   │   ├── blueprints/     # Blueprint logic
-│   │   │   └──  BlueprintEditor.jsx
-│   │   ├──  contracts/      # Contract logic (YOUR CODE GOES HERE)
-│   │   │   ├──  ContractCreator.jsx
-│   │   │   └──  ContractDetail.jsx
-│   │   └──  dashboard/      # Analytical views
-│   │       └──  Dashboard.jsx
-│   ├──  hooks/              # Custom reusable logic
-│   ├──  App.jsx             # ROUTER & LAYOUT SHELL
-│   ├──  main.jsx            # Entry point
-│   └──  index.css           # Global Styles & Violet Theme
-├──  package.json            # Project Metadata
-└──  README.md               # Lifecycle & Flow documentation
+│   ├── context/            # THE STATE ENGINE
+│   │   └── AppContext.jsx   # Context Provider & Lifecycle logic
+│   ├── features/           # BUSINESS DOMAINS (Non-Monolithic)
+│   │   ├── blueprints/
+│   │   │   └── BlueprintEditor.jsx
+│   │   ├── contracts/
+│   │   │   ├── ContractCreator.jsx
+│   │   │   └── ContractDetail.jsx
+│   │   └── dashboard/
+│   │       └── Dashboard.jsx
+│   ├── hooks/              # Custom reusable logic
+│   ├── App.jsx             # ROUTER & LAYOUT SHELL
+│   ├── main.jsx            # Entry point
+│   └── index.css           # Global Styles & Violet Theme
+├── package.json            # Project Metadata
+└── README.md               # Lifecycle & Flow documentation 
+```
 The Data Flow Explained
 In your ContractCreator.jsx, the flow works like this:
 
@@ -264,17 +281,20 @@ Physical Size: 210mm × 297mm
 Print Settings: A4 page size, no margins
 Field Positioning: Pixel-perfect positioning preserved in print
 🔄 Contract Status Workflow
+```text
 Created → Approved → Sent → Signed → Locked
    ↓                    ↓
 Revoked ←──────────────┘
+```
 
 Display Status Mapping:
 - Active: Created, Approved
 - Pending: Sent
 - Signed: Signed, Locked
-- Revoked: Revoked
+- Revoked
 � Architecture and Design Decisions
 Application Architecture
+```text
 The application follows a Component-Based Architecture using React with TypeScript, organized into clear layers:
 
 ┌─────────────────────────────────────────────┐
@@ -291,6 +311,7 @@ The application follows a Component-Based Architecture using React with TypeScri
 │         Data Persistence Layer              │
 │       (localStorage, db.ts utilities)       │
 └─────────────────────────────────────────────┘
+```
 Key Design Decisions
 1. Client-Side Only Architecture
 Decision: Build as a pure frontend application with no backend
@@ -498,234 +519,4 @@ No Real-Time Updates:
 
 Changes only reflected after page refresh in some cases
 No WebSocket or real-time sync
-No conflict resolution
-Limited Search:
-
-Simple text matching only
-No advanced filters (date ranges, status combinations, etc.)
-No full-text search across all fields
-Search is case-insensitive but exact match
-Status Workflow:
-
-Cannot skip status steps (must go in order)
-Cannot go backward in workflow (except revoke)
-Once locked, contract cannot be unlocked
-No custom workflows per blueprint
-Field Types:
-
-Limited to 4 field types (text, date, checkbox, signature)
-No support for:
-Dropdowns/select fields
-Multi-line text areas
-Number fields with validation
-Currency fields
-File attachments (other than signatures)
-Rich text/formatting
-Signature Handling:
-
-Only image uploads (no draw signature)
-Fixed size (1.5cm × 3cm)
-No signature validation
-Stored as base64 (increases storage size)
-User Experience
-No Undo/Redo:
-
-Cannot undo deletions
-No version history
-No recovery for accidentally deleted items
-No Validation Rules:
-
-Cannot set required fields
-No format validation (email, phone, etc.)
-No min/max length constraints
-No conditional logic
-Limited Error Handling:
-
-Basic error messages via toasts
-No detailed error logs
-No error reporting system
-Print Limitations:
-
-Depends on browser's print implementation
-No custom PDF generation
-May have inconsistencies across browsers
-No print templates or customization
-No Mobile Optimization:
-
-Drag-and-drop difficult on touch devices
-Small canvas on mobile screens
-Not responsive below 768px
-Recommended for desktop use only
-Performance
-Client-Side Processing:
-
-All operations happen in browser
-Can be slow with many contracts
-No pagination on lists
-No lazy loading of data
-Memory Usage:
-
-All data loaded into memory at once
-Can cause performance issues with 100+ items
-No virtualization for long lists
-Image Processing:
-
-Base64 conversion happens on main thread
-Can freeze UI for large images
-No image optimization or compression
-Security
-No Authentication:
-
-Anyone with device access can view/modify contracts
-No password protection
-No user accounts
-No Encryption:
-
-Data stored in plain text
-Visible in browser DevTools
-Not suitable for confidential information
-XSS Vulnerabilities:
-
-While React provides some protection
-User-uploaded images not sanitized beyond file type
-No Audit Trail:
-
-Only updatedAt timestamp
-No detailed change history
-Cannot see who made what changes
-No rollback capability
-Browser Compatibility
-Modern Browsers Only:
-
-Requires ES6+ support
-No IE11 support
-May not work in older browser versions
-localStorage Dependency:
-
-Doesn't work in private/incognito mode (with restrictions)
-Blocked if user disables storage
-Print API Dependency:
-
-Relies on browser's native print dialog
-Different results across browsers
-No control over print settings
-Constraints
-Development: Single developer, rapid prototyping focus
-Timeline: Built for quick deployment without backend infrastructure
-Scope: Prototype/MVP, not production-ready system
-Scale: Designed for personal/small team use, not enterprise
-Maintenance: No dedicated maintenance team or SLA
-Recommended Use Cases
-✅ Good For:
-
-Personal contract management
-Small team internal documents
-Prototyping contract workflows
-Learning React/TypeScript
-Template-based document generation
-❌ Not Suitable For:
-
-Enterprise contract management
-Multi-user collaboration
-Legally binding e-signatures
-Sensitive or regulated data
-High-volume processing
-Mobile-first workflows
-Offline-first requirements
-Mitigation Strategies
-For production use, consider:
-
-Backend Integration: Add Node.js/Express API with database
-Cloud Storage: Migrate from localStorage to cloud database
-Authentication: Implement user accounts and permissions
-Validation: Add comprehensive input validation
-Testing: Implement unit and integration tests
-Accessibility: Add ARIA labels and keyboard navigation
-Mobile: Make responsive for mobile devices
-Export: Add PDF generation library (e.g., jsPDF)
-Backup: Implement export/import functionality
-Monitoring: Add error tracking (e.g., Sentry)
-🐛 Legacy Limitations Summary
-No Backend: All data stored in localStorage (not suitable for production)
-Single User: No multi-user support or authentication
-No Export: Contracts cannot be exported except via print
-Storage Limit: Browser localStorage has size constraints
-No Collaboration: Changes are local only
-🔮 Future Enhancements
-Backend API integration
-Database persistence
-User authentication
-Contract templates
-Email notifications
-PDF export without print dialog
-Bulk operations
-Contract versioning
-Audit trail
-Digital signatures
-📝 License
-This project is private and not licensed for public use.
-
-👨‍💻 Development
-Adding New Field Types
-Update FormField['type'] in src/types/blueprint.types.ts
-Add default size in DEFAULT_SIZE object in CreateBlueprint.tsx
-Add color scheme in FIELD_COLORS object
-Add rendering logic in DraggableField.tsx
-Add value input logic in CreateContract.tsx
-Add preview rendering in ViewContract.tsx
-Modifying Status Workflow
-Update Contract['status'] type in src/types/contracts.types.ts
-Modify workflow array in ViewContract.tsx getNextStatus()
-Update color mappings in status functions
-Adjust canRevoke() logic if needed
-🆘 Troubleshooting
-Issue: Fields not appearing after creation
-
-Solution: Ensure field label is not empty before clicking Add
-Issue: Contract not saving
-
-Solution: Check that blueprint is selected and contract name is filled
-Issue: Signature image not displaying
-
-Solution: Ensure image file is valid and under browser size limits (~2MB recommended)
-Issue: Status tracker not updating
-
-Solution: Refresh page or check browser console for errors
-Issue: Data disappeared
-
-Solution: Check if browser data/localStorage was cleared. Always backup important data.
-Version: 0.0.0
-Last Updated: January 2026
-
-A high-performance, frontend-based contract lifecycle management tool built with React, Tailwind CSS, and Framer Motion.
-
-## 🚀 Quick Start
-1. **Clone the repo:** `git clone <your-repo-link>`
-2. **Install dependencies:** `npm install`
-3. **Run development server:** `npm run dev`
-
-## 🏗️ Architecture & Design Decisions
-- **Feature-Based Folder Structure:** I avoided a monolithic structure by organizing code into domain-specific folders (`blueprints`, `contracts`, `dashboard`). This improves maintainability and scalability.
-- **State Machine Pattern:** The contract lifecycle follows a strict state transition map. This prevents illegal actions (e.g., you cannot sign a contract before it is sent).
-- **Immutability Logic:** Contracts in the `Locked` or `Revoked` state utilize conditional rendering to disable all inputs and actions, ensuring data integrity.
-- **Context API for State:** Used React Context to simulate a centralized database, allowing data to persist across different views during the session.
-
-## 🛠️ Tech Stack
-- **React 18:** Functional components with Hooks.
-- **Tailwind CSS:** For a modern, responsive UI without custom CSS files.
-- **Framer Motion:** Used for the side-panel animations and smooth state transitions.
-- **Lucide React:** Standardized iconography.
-
-## 📝 Assumptions & Limitations
-- **Persistence:** Data is stored in `localStorage`. Clearing browser cache will reset the application.
-- **Field Positioning:** Basic Y-axis stacking is used for field placement within the blueprint creator.
-- **Auth:** The system assumes a single-user environment for this demonstration.
-
-## 🔄 Contract Lifecycle
-
-1. **Created**: Initial state after generation.
-2. **Approved**: Internal verification complete.
-3. **Sent**: Contract delivered to the client.
-4. **Signed**: Legally acknowledged by the client.
-5. **Locked**: Final state; no further edits allowed.
-6. **Revoked**: Voided state; can be triggered from Created or Sent.
+No conflict
