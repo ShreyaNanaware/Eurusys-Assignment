@@ -1,4 +1,6 @@
 # Eurusys-Assignment
+This project is deployed on Netlify: [View Live Site](https://calm-bublanina-158fbb.netlify.app)
+
 Contract.io is a modern, single-page contract management application built with React, TypeScript, and Tailwind CSS. It allows users to create reusable contract templates (Blueprints), generate contracts from these templates, and manage their full lifecycle in a visually appealing, SaaS-style dashboard.
 This project is a Contract Management Application built using React and Tailwind CSS.
 It helps users create contract templates called blueprints and generate contracts from them.
